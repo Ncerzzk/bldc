@@ -20,6 +20,15 @@
 
 #define HW_NAME					"410"
 #define INVERTED_SHUNT_POLARITY
+#define COMM_USE_USB 0
+
+#define HW_CANH_PORT			GPIOA
+#define HW_CANH_PIN				11
+#define HW_CANL_PORT			GPIOA
+#define HW_CANL_PIN				12
+#define HW_CAN_GPIO_AF			GPIO_AF_CAN1
+#define HW_CAN_DEV				CAND1
+
 // Macros
 #define ENABLE_GATE()			
 #define DISABLE_GATE()			

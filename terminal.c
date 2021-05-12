@@ -80,7 +80,17 @@ void terminal_process_string(char *str) {
 
 	if (strcmp(argv[0], "ping") == 0) {
 		commands_printf("pong\n");
-	} else if (strcmp(argv[0], "stop") == 0) {
+	} else if(strcmp(argv[0],"sp_duty")==0){
+		float duty_a,phi;
+		commands_printf("test!\n");
+		if(argc==3){
+			sscanf(argv[1], "%f", &duty_a);
+			sscanf(argv[2],"%f",&phi);
+			mcpwm_foc_set_duty_amp_phi(duty_a,phi);
+		}
+		commands_printf("current_a :%f , phi: %f\n",(double)duty_a,(double)phi);
+	}
+	else if (strcmp(argv[0], "stop") == 0) {
 		mc_interface_set_duty(0);
 		commands_printf("Motor stopped\n");
 	} else if (strcmp(argv[0], "last_adc_duration") == 0) {

@@ -306,6 +306,8 @@ typedef struct {
 	BATTERY_TYPE si_battery_type;
 	int si_battery_cells;
 	float si_battery_ah;
+
+	float phi_offset;
 } mc_configuration;
 
 // Applications to use

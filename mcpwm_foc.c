@@ -89,6 +89,8 @@ static volatile int m_curr_unbalance;
 static volatile bool m_phase_override;
 static volatile float m_phase_now_override;
 static volatile float m_duty_cycle_set;
+static volatile float m_duty_cycle_amp_set;    // add 2021.5.12
+static volatile float m_duty_cycle_phi_set; 
 static volatile float m_id_set;
 static volatile float m_iq_set;
 static volatile float m_openloop_speed;
@@ -519,6 +521,13 @@ void mcpwm_foc_set_duty(float dutyCycle) {
 		m_state = MC_STATE_RUNNING;
 	}
 }
+
+void mcpwm_foc_set_duty_amp_phi(float dutyCycle_amp,float phi) {
+	m_duty_cycle_amp_set = dutyCycle_amp;
+	m_duty_cycle_phi_set = phi;
+}
+
+
 
 /**
  * Use duty cycle control. Absolute values less than MCPWM_MIN_DUTY_CYCLE will
@@ -1889,7 +1898,9 @@ void mcpwm_foc_adc_int_handler(void *p, uint32_t flags) {
 		UTILS_LP_FAST(duty_filtered, m_motor_state.duty_now, 0.1);
 		utils_truncate_number(&duty_filtered, -1.0, 1.0);
 
-		float duty_set = m_duty_cycle_set;
+		
+		float duty_adder = m_duty_cycle_amp_set*cosf(m_pos_pid_now*M_PI/180.0f+m_duty_cycle_phi_set);
+		float duty_set = m_duty_cycle_set + duty_adder;
 		bool control_duty = m_control_mode == CONTROL_MODE_DUTY ||
 				m_control_mode == CONTROL_MODE_OPENLOOP_DUTY ||
 				m_control_mode == CONTROL_MODE_OPENLOOP_DUTY_PHASE;

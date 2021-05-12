@@ -6,6 +6,7 @@
         "mcuconf.h": "c",
         "mc_interface.h": "c",
         "conf_general.h": "c",
-        "mcpwm_foc.h": "c"
+        "mcpwm_foc.h": "c",
+        "utils.h": "c"
     }
 }
