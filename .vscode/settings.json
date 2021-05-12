@@ -1,0 +1,11 @@
+{
+    "files.associations": {
+        "hal.h": "c",
+        "st.h": "c",
+        "st_lld.h": "c",
+        "mcuconf.h": "c",
+        "mc_interface.h": "c",
+        "conf_general.h": "c",
+        "mcpwm_foc.h": "c"
+    }
+}

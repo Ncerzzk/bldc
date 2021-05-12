@@ -182,6 +182,28 @@ void assert_failed(uint8_t* file, uint32_t line) {
 	}
 }
 
+void hw_axiom_DAC1_setdata(uint16_t data) {
+	DAC->DHR12R1 = data;
+}
+
+void dac_init(void) {
+	// GPIOA clock enable
+	RCC_AHB1PeriphClockCmd(RCC_AHB1Periph_GPIOA, ENABLE);
+
+	// DAC Periph clock enable
+	RCC_APB1PeriphClockCmd(RCC_APB1Periph_DAC, ENABLE);
+
+	// DAC channel 1 & 2 (DAC_OUT1 = PA.4)(DAC_OUT2 = PA.5) configuration
+	palSetPadMode(GPIOA, 4, PAL_MODE_INPUT_ANALOG);
+
+	// Enable both DAC channels with output buffer disabled to achieve rail-to-rail output
+	DAC->CR |= DAC_CR_EN1;// | DAC_CR_BOFF1 ;
+
+	// Set DAC channels at 1.65V
+	hw_axiom_DAC1_setdata(0x800);
+}
+
+
 int main(void) {
 	halInit();
 	chSysInit();
@@ -203,7 +225,7 @@ int main(void) {
 
 	timer_init();
 	conf_general_init();
-
+	
 	if( flash_helper_verify_flash_memory() == FAULT_CODE_FLASH_CORRUPTION )	{
 		// Loop here, it is not safe to run any code
 		while (1) {
@@ -215,6 +237,7 @@ int main(void) {
 	}
 
 	ledpwm_init();
+	dac_init();
 
 	mc_configuration mcconf;
 	conf_general_read_mc_configuration(&mcconf);
