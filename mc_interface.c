@@ -372,6 +372,8 @@ void mc_interface_set_pwm_callback(void (*p_func)(void)) {
 	pwn_done_func = p_func;
 }
 
+
+
 /**
  * Lock the control by disabling all control commands.
  */
@@ -462,6 +464,12 @@ void mc_interface_set_duty(float dutyCycle) {
 
 	default:
 		break;
+	}
+}
+
+void mc_interface_set_dutyamp_phi(float duty_amp,float phi){
+	if(m_conf.motor_type==MOTOR_TYPE_FOC){
+		mcpwm_foc_set_duty_amp_phi(duty_amp,phi);
 	}
 }
 

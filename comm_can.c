@@ -458,6 +458,18 @@ void comm_can_conf_current_limits(uint8_t controller_id,
 					CAN_PACKET_CONF_CURRENT_LIMITS) << 8), buffer, send_index);
 }
 
+
+void comm_can_set_duty_amp_phi(uint8_t controller_id,
+		float duty_amp,float phi) {
+	int32_t send_index = 0;
+	uint8_t buffer[8];
+	buffer_append_float32(buffer, duty_amp, 1e3, &send_index);
+	buffer_append_float32(buffer, phi, 1e3, &send_index);
+	comm_can_transmit_eid(controller_id |
+			((uint32_t)CAN_PACKET_SET_DUTY_AMP_PHI<< 8), buffer, send_index);
+}
+
+
 /**
  * Update input current limits on VESC on CAN-bus.
  *
@@ -798,6 +810,15 @@ static THD_FUNCTION(cancom_process_thread, arg) {
 					case CAN_PACKET_SET_DUTY:
 						ind = 0;
 						mc_interface_set_duty(buffer_get_float32(rxmsg.data8, 1e5, &ind));
+						timeout_reset();
+						break;
+
+					case CAN_PACKET_SET_DUTY_AMP_PHI:
+						ind = 0;
+						float amp,phi;
+						amp = buffer_get_float32(rxmsg.data8, 1e3, &ind);
+						phi = buffer_get_float32(rxmsg.data8, 1e3, &ind);
+						mc_interface_set_dutyamp_phi(amp,phi);
 						timeout_reset();
 						break;
 
