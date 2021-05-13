@@ -80,7 +80,15 @@ void terminal_process_string(char *str) {
 
 	if (strcmp(argv[0], "ping") == 0) {
 		commands_printf("pong\n");
-	} else if(strcmp(argv[0],"sp_duty")==0){
+	} else if(strcmp(argv[0],"pos_off")==0){
+		commands_printf("pos_off:%f\n",(double)mcconf.phi_offset);
+	}
+	else if(strcmp(argv[0],"pos_off_here")==0){
+		mcconf.phi_offset = mcpwm_foc_get_pid_pos_now();
+		commands_printf("OK,pos = %f \n",(double)mcconf.phi_offset);	
+		conf_general_store_mc_configuration(&mcconf);
+	}
+	else if(strcmp(argv[0],"sp_duty")==0){
 		float duty_a,phi;
 		commands_printf("test!\n");
 		if(argc==3){
