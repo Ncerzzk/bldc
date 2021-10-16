@@ -18,9 +18,10 @@
 #ifndef HW_410_H_
 #define HW_410_H_
 
-#define HW_NAME					"410"
+#define HW_NAME					"410_MINI"
 #define INVERTED_SHUNT_POLARITY
 #define COMM_USE_USB 0
+#define HW_SUPPORT_M3508
 
 #define HW_CANH_PORT			GPIOA
 #define HW_CANH_PIN				11
@@ -28,6 +29,10 @@
 #define HW_CANL_PIN				12
 #define HW_CAN_GPIO_AF			GPIO_AF_CAN1
 #define HW_CAN_DEV				CAND1
+
+#ifdef HW_SUPPORT_M3508
+    #define HW_HAS_SIN_COS_ENCODER
+#endif
 
 // Macros
 #define ENABLE_GATE()			

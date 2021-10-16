@@ -282,6 +282,18 @@ void comm_can_set_duty(uint8_t controller_id, float duty) {
 			((uint32_t)CAN_PACKET_SET_DUTY << 8), buffer, send_index);
 }
 
+void comm_can_set_duty_amp_phi(uint8_t controller_id,float duty,
+		float duty_amp,float phi) {
+	int32_t send_index = 0;
+	uint8_t buffer[8];
+	buffer_append_float16(buffer, duty,1e4, &send_index);
+	buffer_append_float16(buffer, duty_amp,1e4, &send_index);
+	buffer_append_float32(buffer, phi, 1e3, &send_index);
+	comm_can_transmit_eid(controller_id |
+			((uint32_t)CAN_PACKET_SET_DUTY_AMP_PHI<< 8), buffer, send_index);
+}
+
+
 void comm_can_set_current(uint8_t controller_id, float current) {
 	int32_t send_index = 0;
 	uint8_t buffer[4];
@@ -459,15 +471,7 @@ void comm_can_conf_current_limits(uint8_t controller_id,
 }
 
 
-void comm_can_set_duty_amp_phi(uint8_t controller_id,
-		float duty_amp,float phi) {
-	int32_t send_index = 0;
-	uint8_t buffer[8];
-	buffer_append_float32(buffer, duty_amp, 1e3, &send_index);
-	buffer_append_float32(buffer, phi, 1e3, &send_index);
-	comm_can_transmit_eid(controller_id |
-			((uint32_t)CAN_PACKET_SET_DUTY_AMP_PHI<< 8), buffer, send_index);
-}
+
 
 
 /**
@@ -815,9 +819,12 @@ static THD_FUNCTION(cancom_process_thread, arg) {
 
 					case CAN_PACKET_SET_DUTY_AMP_PHI:
 						ind = 0;
-						float amp,phi;
-						amp = buffer_get_float32(rxmsg.data8, 1e3, &ind);
+						float duty,amp,phi;
+						duty = buffer_get_float16(rxmsg.data8,1e4,&ind);
+						amp = buffer_get_float16(rxmsg.data8, 1e4,&ind);
 						phi = buffer_get_float32(rxmsg.data8, 1e3, &ind);
+						//commands_printf("duty :%f %f %f",duty,amp,phi);
+						mc_interface_set_duty(duty);
 						mc_interface_set_dutyamp_phi(amp,phi);
 						timeout_reset();
 						break;

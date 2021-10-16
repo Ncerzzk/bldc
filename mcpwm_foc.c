@@ -1898,9 +1898,19 @@ void mcpwm_foc_adc_int_handler(void *p, uint32_t flags) {
 		UTILS_LP_FAST(duty_filtered, m_motor_state.duty_now, 0.1);
 		utils_truncate_number(&duty_filtered, -1.0, 1.0);
 
-		float rps = fabsf(mcpwm_foc_get_rpm())/60/7;
-		float theta_delay = atan2f(-rps*2*M_PI,1496.0f);
-		float duty_adder = m_duty_cycle_amp_set*cosf((m_pos_pid_now-m_conf->phi_offset-m_duty_cycle_phi_set)*M_PI/180.0f);
+//		float rps = fabsf(mcpwm_foc_get_rpm())/60/7;
+// 		float theta_delay = atan2f(-rps*2*M_PI,1496.0f);
+		static float old_cos_val=0;
+		float duty_adder=0;
+		float cos_val = cosf((m_pos_pid_now-m_conf->phi_offset-m_duty_cycle_phi_set)*M_PI/180.0f);
+		
+		if(fabsf(cos_val-old_cos_val)<0.1f){
+			duty_adder = m_duty_cycle_amp_set*cos_val;
+			old_cos_val = cos_val;
+		}else{
+			duty_adder = m_duty_cycle_amp_set*old_cos_val;
+		}
+		
 		float duty_set = m_duty_cycle_set + duty_adder;
 		bool control_duty = m_control_mode == CONTROL_MODE_DUTY ||
 				m_control_mode == CONTROL_MODE_OPENLOOP_DUTY ||

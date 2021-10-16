@@ -61,8 +61,8 @@
 //#define HW_SOURCE "hw_49.c"
 //#define HW_HEADER "hw_49.h"
 
-#define HW_SOURCE "hw_410.c" // Also for 4.11 and 4.12
-#define HW_HEADER "hw_410.h" // Also for 4.11 and 4.12
+#define HW_SOURCE "hw_410_mini.c" // Also for 4.11 and 4.12
+#define HW_HEADER "hw_410_mini.h" // Also for 4.11 and 4.12
 
 // Benjamins first HW60 PCB with PB5 and PB6 swapped
 //#define HW60_VEDDER_FIRST_PCB

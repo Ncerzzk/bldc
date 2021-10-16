@@ -31,9 +31,13 @@
 #define AS5047_SAMPLE_RATE_HZ		20000
 #define AD2S1205_SAMPLE_RATE_HZ		20000		//25MHz max spi clk
 #define SINCOS_SAMPLE_RATE_HZ		20000
-#define SINCOS_MIN_AMPLITUDE		1.0			// sqrt(sin^2 + cos^2) has to be larger than this
-#define SINCOS_MAX_AMPLITUDE		1.65		// sqrt(sin^2 + cos^2) has to be smaller than this
-
+#ifdef HW_SUPPORT_M3508
+	#define SINCOS_MIN_AMPLITUDE		0.3			// sqrt(sin^2 + cos^2) has to be larger than this
+	#define SINCOS_MAX_AMPLITUDE		1.8		// sqrt(sin^2 + cos^2) has to be smaller than this
+#else
+	#define SINCOS_MIN_AMPLITUDE		1.0			// sqrt(sin^2 + cos^2) has to be larger than this
+	#define SINCOS_MAX_AMPLITUDE		1.65		// sqrt(sin^2 + cos^2) has to be smaller than this
+#endif
 
 #if AS5047_USE_HW_SPI_PINS
 #ifdef HW_SPI_DEV

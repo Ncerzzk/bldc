@@ -82,6 +82,8 @@ static volatile float m_motor_current_unbalance_error_rate;
 #define ADC_SAMPLE_MAX_LEN		2000
 __attribute__((section(".ram4"))) static volatile int16_t m_curr0_samples[ADC_SAMPLE_MAX_LEN];
 __attribute__((section(".ram4"))) static volatile int16_t m_curr1_samples[ADC_SAMPLE_MAX_LEN];
+__attribute__((section(".ram4"))) static volatile int16_t m_iq_samples[ADC_SAMPLE_MAX_LEN];
+__attribute__((section(".ram4"))) static volatile int16_t m_duty_samples[ADC_SAMPLE_MAX_LEN];
 __attribute__((section(".ram4"))) static volatile int16_t m_ph1_samples[ADC_SAMPLE_MAX_LEN];
 __attribute__((section(".ram4"))) static volatile int16_t m_ph2_samples[ADC_SAMPLE_MAX_LEN];
 __attribute__((section(".ram4"))) static volatile int16_t m_ph3_samples[ADC_SAMPLE_MAX_LEN];
@@ -1672,6 +1674,8 @@ void mc_interface_mc_timer_isr(void) {
 			if (m_conf.motor_type == MOTOR_TYPE_FOC) {
 				zero = (ADC_V_L1 + ADC_V_L2 + ADC_V_L3) / 3;
 				m_phase_samples[m_sample_now] = (uint8_t)(mcpwm_foc_get_phase() / 360.0 * 250.0);
+				m_iq_samples[m_sample_now] = (int16_t)(mcpwm_foc_get_iq()*1e3);
+				m_duty_samples[m_sample_now] = (int16_t)(mcpwm_foc_get_duty_cycle_now()*1e4);
 //				m_phase_samples[m_sample_now] = (uint8_t)(mcpwm_foc_get_phase_observer() / 360.0 * 250.0);
 //				float ang = utils_angle_difference(mcpwm_foc_get_phase_observer(), mcpwm_foc_get_phase_encoder()) + 180.0;
 //				m_phase_samples[m_sample_now] = (uint8_t)(ang / 360.0 * 250.0);
@@ -2042,8 +2046,11 @@ static THD_FUNCTION(sample_send_thread, arg) {
 			}
 
 			buffer[index++] = COMM_SAMPLE_PRINT;
-			buffer_append_float32_auto(buffer, (float)m_curr0_samples[ind_samp] * FAC_CURRENT, &index);
-			buffer_append_float32_auto(buffer, (float)m_curr1_samples[ind_samp] * FAC_CURRENT, &index);
+			//buffer_append_float32_auto(buffer, (float)m_curr0_samples[ind_samp] * FAC_CURRENT, &index);
+			//buffer_append_float32_auto(buffer, (float)m_curr1_samples[ind_samp] * FAC_CURRENT, &index);
+			buffer_append_float32_auto(buffer, (float)m_iq_samples[ind_samp]/1e3, &index);
+			buffer_append_float32_auto(buffer, (float)m_duty_samples[ind_samp]/1e4, &index);
+
 			buffer_append_float32_auto(buffer, ((float)m_ph1_samples[ind_samp] / 4096.0 * V_REG) * ((VIN_R1 + VIN_R2) / VIN_R2), &index);
 			buffer_append_float32_auto(buffer, ((float)m_ph2_samples[ind_samp] / 4096.0 * V_REG) * ((VIN_R1 + VIN_R2) / VIN_R2), &index);
 			buffer_append_float32_auto(buffer, ((float)m_ph3_samples[ind_samp] / 4096.0 * V_REG) * ((VIN_R1 + VIN_R2) / VIN_R2), &index);
