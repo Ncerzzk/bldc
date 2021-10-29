@@ -30,7 +30,7 @@
 #define HW_CAN_GPIO_AF			GPIO_AF_CAN1
 #define HW_CAN_DEV				CAND1
 
-#ifdef HW_SUPPORT_M3508
+#ifndef HW_SUPPORT_M3508
     #define HW_HAS_SIN_COS_ENCODER
 #endif
 
