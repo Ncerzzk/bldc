@@ -2465,3 +2465,19 @@ bool mc_interface_save_odometer(void) {
 	v.as_u32 = mc_interface_get_odometer();
 	return conf_general_store_eeprom_var_custom(&v, EEPROM_ADDR_ODOMETER);
 }
+
+
+void mc_interface_set_p_offset(float offset,bool is_motor2){
+	if(is_motor2){
+		;
+	}else{
+		m_motor_1.m_conf.p_offset=offset;
+	}
+}
+
+float mc_interface_get_p_offset(bool is_motor2){
+	if(!is_motor2){
+		return m_motor_1.m_conf.p_offset;
+	}
+	return 0;
+}

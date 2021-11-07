@@ -399,6 +399,8 @@ typedef struct {
 	float p_pid_kd;
 	float p_pid_kd_filter;
 	float p_pid_ang_div;
+	bool  p_absolute_mode;
+	float p_offset;
 
 	// Current controller
 	float cc_startup_boost_duty;
@@ -924,6 +926,7 @@ typedef enum {
 	COMM_ERASE_BOOTLOADER_ALL_CAN_HW,
 
 	COMM_SET_ODOMETER,
+	COMM_HOME,
 } COMM_PACKET_ID;
 
 // CAN commands

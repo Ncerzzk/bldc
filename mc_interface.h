@@ -84,6 +84,8 @@ float mc_interface_get_battery_level(float *wh_left);
 float mc_interface_get_speed(void);
 float mc_interface_get_distance(void);
 float mc_interface_get_distance_abs(void);
+void mc_interface_set_p_offset(float offset,bool is_motor2);
+float mc_interface_get_p_offset(bool is_motor2);
 
 // odometer
 uint32_t mc_interface_get_odometer(void);

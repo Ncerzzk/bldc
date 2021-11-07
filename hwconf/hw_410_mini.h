@@ -22,6 +22,9 @@
 #define INVERTED_SHUNT_POLARITY
 #define COMM_USE_USB 0
 #define AS5047_USE_HW_SPI_PINS 1
+#define CAN_ENABLE 1 // disable can temporarily
+
+extern bool IS_HOMEING;
 
 #define HW_CANH_PORT			GPIOA
 #define HW_CANH_PIN				11

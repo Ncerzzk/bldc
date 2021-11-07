@@ -1248,6 +1248,7 @@ static void run_pid_control_pos(float dt, float pos_now) {
 	static float prev_error = 0;
 	float p_term;
 	float d_term;
+	float error=0;
 
 	// PID is off. Return.
 	if (control_mode != CONTROL_MODE_POS) {
@@ -1257,7 +1258,8 @@ static void run_pid_control_pos(float dt, float pos_now) {
 	}
 
 	// Compute error
-	float error = utils_angle_difference(pos_now, pos_pid_set_pos);
+	error = utils_angle_difference(pos_now, pos_pid_set_pos);
+
 
 	// Compute parameters
 	p_term = error * conf->p_pid_kp;

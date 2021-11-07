@@ -157,6 +157,10 @@
 #define MCCONF_P_PID_ANG_DIV			1.0		// Divide angle by this value
 #endif
 
+#ifndef MCCONF_P_ABSOLUTE_MODE
+#define MCCONF_P_ABSOLUTE_MODE			    false		// Use fast position mode
+#endif
+
 // Current control parameters
 #ifndef MCCONF_CC_GAIN
 #define MCCONF_CC_GAIN					0.0046	// Current controller error gain

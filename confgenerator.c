@@ -767,6 +767,7 @@ void confgenerator_set_defaults_mcconf(mc_configuration *conf) {
 	conf->p_pid_kd = MCCONF_P_PID_KD;
 	conf->p_pid_kd_filter = MCCONF_P_PID_KD_FILTER;
 	conf->p_pid_ang_div = MCCONF_P_PID_ANG_DIV;
+	conf->p_absolute_mode= MCCONF_P_ABSOLUTE_MODE;
 	conf->cc_startup_boost_duty = MCCONF_CC_STARTUP_BOOST_DUTY;
 	conf->cc_min_current = MCCONF_CC_MIN_CURRENT;
 	conf->cc_gain = MCCONF_CC_GAIN;

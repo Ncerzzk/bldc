@@ -86,7 +86,15 @@ void terminal_process_string(char *str) {
 
 	if (strcmp(argv[0], "ping") == 0) {
 		commands_printf("pong\n");
-	} else if (strcmp(argv[0], "stop") == 0) {
+	}else if (strcmp(argv[0],"p_offset")==0){
+		commands_printf("pos_offset:%f\n",mc_interface_get_p_offset(false));
+	} else if (strcmp(argv[0],"home")==0){
+		commands_printf("start homing!\n");
+		IS_HOMEING=true;
+		mc_interface_set_duty(0.1);
+		timeout_reset();
+	}
+	else if (strcmp(argv[0], "stop") == 0) {
 		mc_interface_set_duty(0);
 		commands_printf("Motor stopped\n");
 	} else if (strcmp(argv[0], "last_adc_duration") == 0) {

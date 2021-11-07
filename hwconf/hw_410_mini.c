@@ -21,6 +21,7 @@
 #include "hal.h"
 #include "stm32f4xx_conf.h"
 
+bool IS_HOMEING=false;
 // Variables
 static volatile bool i2c_running = false;
 
@@ -121,6 +122,26 @@ void hw_init_gpio(void) {
 	palSetPadMode(GPIOC, 1, PAL_MODE_INPUT_ANALOG);
 	palSetPadMode(GPIOC, 2, PAL_MODE_INPUT_ANALOG);
 	palSetPadMode(GPIOC, 3, PAL_MODE_INPUT_ANALOG);
+
+
+	// add EXTI temporarily
+
+	palSetPadMode(GPIOC, 9, PAL_MODE_INPUT_PULLUP);	
+	EXTI_InitTypeDef   EXTI_InitStructure;
+	// Connect EXTI Line to pin
+	SYSCFG_EXTILineConfig(EXTI_PortSourceGPIOA, EXTI_PinSource12);
+
+	// Configure EXTI Line
+	EXTI_InitStructure.EXTI_Line = EXTI_Line9;
+	EXTI_InitStructure.EXTI_Mode = EXTI_Mode_Interrupt;
+	EXTI_InitStructure.EXTI_Trigger = EXTI_Trigger_Rising ;
+	EXTI_InitStructure.EXTI_LineCmd = ENABLE;
+	EXTI_Init(&EXTI_InitStructure);
+
+	// Enable and set EXTI Line Interrupt to the highest priority
+	nvicEnableVector(EXTI9_5_IRQn, 0);
+
+
 }
 
 void hw_setup_adc_channels(void) {

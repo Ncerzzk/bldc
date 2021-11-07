@@ -216,6 +216,11 @@ void commands_process_packet(unsigned char *data, unsigned int len,
 
 		reply_func(send_buffer, ind);
 	} break;
+	case COMM_HOME:
+		IS_HOMEING=true;
+		mc_interface_set_duty(0.1);
+		timeout_reset();
+	break;
 
 	case COMM_JUMP_TO_BOOTLOADER_ALL_CAN:
 		data[-1] = COMM_JUMP_TO_BOOTLOADER;

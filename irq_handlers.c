@@ -33,6 +33,20 @@ CH_IRQ_HANDLER(ADC1_2_3_IRQHandler) {
 	CH_IRQ_EPILOGUE();
 }
 
+CH_IRQ_HANDLER(EXTI9_5_IRQHandler) {
+ if(EXTI_GetITStatus(EXTI_Line9)!= RESET){
+
+		if(IS_HOMEING==true){
+			IS_HOMEING=false;
+			mc_interface_set_duty(0);
+			mc_interface_set_p_offset(mc_interface_get_pid_pos_now(),false);
+		}
+
+		EXTI_ClearITPendingBit(EXTI_Line9);
+	}
+}
+
+
 CH_IRQ_HANDLER(HW_ENC_EXTI_ISR_VEC) {
 	if (EXTI_GetITStatus(HW_ENC_EXTI_LINE) != RESET) {
 		encoder_reset();

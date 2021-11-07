@@ -3666,6 +3666,7 @@ static void run_pid_control_pos(float angle_now, float angle_set, float dt, vola
 	volatile mc_configuration *conf_now = motor->m_conf;
 	float p_term;
 	float d_term;
+	float error=0;
 
 	// PID is off. Return.
 	if (motor->m_control_mode != CONTROL_MODE_POS) {
@@ -3675,7 +3676,8 @@ static void run_pid_control_pos(float angle_now, float angle_set, float dt, vola
 	}
 
 	// Compute parameters
-	float error = utils_angle_difference(angle_set, angle_now);
+	error = utils_angle_difference(angle_set, angle_now-conf_now->p_offset);
+
 
 	if (encoder_is_configured()) {
 		if (conf_now->foc_encoder_inverted) {
