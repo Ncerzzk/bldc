@@ -129,7 +129,7 @@ void hw_init_gpio(void) {
 	palSetPadMode(GPIOC, 9, PAL_MODE_INPUT_PULLUP);	
 	EXTI_InitTypeDef   EXTI_InitStructure;
 	// Connect EXTI Line to pin
-	SYSCFG_EXTILineConfig(EXTI_PortSourceGPIOA, EXTI_PinSource12);
+	SYSCFG_EXTILineConfig(EXTI_PortSourceGPIOC, EXTI_PinSource9);
 
 	// Configure EXTI Line
 	EXTI_InitStructure.EXTI_Line = EXTI_Line9;

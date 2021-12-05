@@ -26,10 +26,10 @@
 
 extern bool IS_HOMEING;
 
-#define HW_CANH_PORT			GPIOA
-#define HW_CANH_PIN				11
-#define HW_CANL_PORT			GPIOA
-#define HW_CANL_PIN				12
+#define HW_CANRX_PORT			GPIOA
+#define HW_CANRX_PIN				11
+#define HW_CANTX_PORT			GPIOA
+#define HW_CANTX_PIN				12
 #define HW_CAN_GPIO_AF			GPIO_AF_CAN1
 #define HW_CAN_DEV				CAND1
 
